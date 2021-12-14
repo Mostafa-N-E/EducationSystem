@@ -14,9 +14,9 @@ urlpatterns = [
 
     # student
     path('student/list/', views.ListStudent_api.as_view(), name='s_student_list'),
-    path('student/create', EmployeeCreateApi.as_view(), name='s_student_create'),
-    path('student/update/<int:pk>', EmployeeUpdateApi.as_view(), name='s_student_update'),
-    path('student/destroy/<int:pk>', EmployeeDestroyApi.as_view(), name='s_student_destroy'),
+    path('student/create', views.StudentCreateApi.as_view(), name='s_student_create'),
+    path('student/update/<int:pk>', views.StudentUpdateApi.as_view(), name='s_student_update'),
+    path('student/destroy/<int:pk>', views.StudentDestroyApi.as_view(), name='s_student_destroy'),
 
     path('student-list/', views.student_list, name='s_student_list'),
     path('student-detail/<int:pk>', views.student_detail, name='s_student_detail'),

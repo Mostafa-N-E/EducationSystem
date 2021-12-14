@@ -5,6 +5,7 @@ from persons.models import Professor,Student, ClassLesson
 from .serializers import ProfessorSerializer, StudentSerializer, ClassLessonSerializer,SelectClassLessonSerializer
 
 from rest_framework import generics
+from rest_framework.views import APIView
 
 class SelectClassLessonAPI( generics.RetrieveUpdateDestroyAPIView ):
     queryset = Student.objects.all()
@@ -57,8 +58,8 @@ def professor_detail(request,pk):
 
 
 #  generics.RetrieveModelMixin, generics.UpdateModelMixin, generics.DestroyModelMixin = generics.RetrieveUpdateDestroyAPIView
-class Student_api(generics.CreateModelMixin, generics.RetrieveUpdateDestroyAPIView):
-    pass
+# class Student_api(generics.CreateModelMixin, generics.RetrieveUpdateDestroyAPIView):
+#     pass
 
 class StudentCreateApi(generics.CreateAPIView):
     queryset = Student.objects.all()
