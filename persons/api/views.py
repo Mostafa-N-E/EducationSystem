@@ -56,6 +56,38 @@ def professor_detail(request,pk):
         return Response(res)
 
 
+#  generics.RetrieveModelMixin, generics.UpdateModelMixin, generics.DestroyModelMixin = generics.RetrieveUpdateDestroyAPIView
+class Student_api(generics.CreateModelMixin, generics.RetrieveUpdateDestroyAPIView):
+    pass
+
+class StudentCreateApi(generics.CreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentUpdateApi(generics.RetrieveUpdateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class StudentDestroyApi(generics.RetrieveDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+class ListStudent_api(APIView):
+
+    # authentication_classes = [authentication.TokenAuthentication]
+    # permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, format=None):
+        """
+        Return a list of all students.
+        """
+        if self.request.user.is_superuser:
+            # students = ClassLesson.objects.all()
+            students = [student for student in ClassLesson.objects.all()]
+        else:
+            students = ClassLesson.objects.filter(professor__username=self.request.user.username).annotate(Count('students'))
+
+        return Response(students)
 
 
 @api_view(['GET', 'POST'])

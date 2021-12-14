@@ -42,6 +42,7 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
+        # fields = []
 
 
 class ProfessorSerializer(serializers.ModelSerializer):

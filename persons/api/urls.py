@@ -12,7 +12,12 @@ urlpatterns = [
     path('professor-list/', views.professor_list, name='s_professor_list'),
     path('professor-detail/<int:pk>', views.professor_detail, name='s_professor_detail'),
 
-    # strdent
+    # student
+    path('student/list/', views.ListStudent_api.as_view(), name='s_student_list'),
+    path('student/create', EmployeeCreateApi.as_view(), name='s_student_create'),
+    path('student/update/<int:pk>', EmployeeUpdateApi.as_view(), name='s_student_update'),
+    path('student/destroy/<int:pk>', EmployeeDestroyApi.as_view(), name='s_student_destroy'),
+
     path('student-list/', views.student_list, name='s_student_list'),
     path('student-detail/<int:pk>', views.student_detail, name='s_student_detail'),
     path('student-select-class/<int:pk>', views.SelectClassLessonAPI.as_view(), name='api_select_class_lesson'),
