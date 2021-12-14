@@ -42,5 +42,7 @@ class LoginAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         update_last_login(None, user)
+        if not user.is_email_active:
+            return Response({"status": status.HTTP_403})
         token, created = Token.objects.get_or_create(user=user)
         return Response({"status": status.HTTP_200_OK, "Token": token.key})
