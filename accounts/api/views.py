@@ -5,6 +5,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import exceptions
 from rest_framework import authentication
+from rest_framework import status
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authentication import SessionAuthentication
 
@@ -13,6 +14,9 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.utils.timezone import now
 
 from rest_auth.views import LoginView
+
+from .serializers import UserSerializer
+User = get_user_model()
 
 class MyAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
@@ -41,21 +45,14 @@ class MyAuthentication(authentication.BaseAuthentication):
         return (user, None)  # authentication successful
 
 
-class LoginAPIView(LoginView):
+class LoginAPIView(LoginView, APIView):
+    serializer_class = UserSerializer
 
     def login(self):
-        # self.user = self.serializer.validated_data['user']
-        #
-        # if getattr(settings, 'REST_USE_JWT', False):
-        #     self.token = jwt_encode(self.user)
-        # else:
-        #     self.token = create_token(self.token_model, self.user,
-        #                               self.serializer)
-        #
-        # if getattr(settings, 'REST_SESSION_LOGIN', True):
-        #     self.process_login()
-        queryset = Person.objects.get(email=request.data['email'])
-        if (check_password(request.data['password'], queryset.password)):
+        user = User.objects.get(username=self.request.data['username'])
+        # queryset = User.objects.filter(username=request.data['username']).first
+
+        if (check_password(self.request.data['password'], user.password)):
             token = Token.objects.get_or_create(user=user)
 
             obj = {
@@ -69,3 +66,9 @@ class LoginAPIView(LoginView):
         }
         return Response(obj, status=status.HTTP_401_UNAUTHORIZED)
 
+    def get_response(self):
+        serializer_class = self.get_response_serializer()
+        serializer = serializer_class(instance=self.token,
+                                          context={'request': self.request})
+        response = Response(serializer.data, status=status.HTTP_200_OK)
+        return response
