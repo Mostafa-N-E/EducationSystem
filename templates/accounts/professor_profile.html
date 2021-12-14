@@ -1,0 +1,42 @@
+{% extends 'professer/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}پروفایل استاد{% endblock %}
+
+{% block main %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">اطلاعات استاد</h3>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.username|as_crispy_field}}
+                    </div>
+                    <div class="col-6">
+                        {{ form.first_name|as_crispy_field}}
+                    </div>
+                    <div class="col-6">
+                        {{ form.last_name|as_crispy_field}}
+                    </div>
+                    <div class="col-6">
+                        {{ form.phone_number|as_crispy_field}}
+                    </div>
+                    <div class="col-6">
+                        {{ form.email|as_crispy_field}}
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">ویرایش اطلاعات</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+

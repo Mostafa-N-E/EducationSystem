@@ -1,0 +1,69 @@
+
+{% extends 'student/base.html' %}
+{% block title %}فرم امانت کتاب{% endblock %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{#{% block main %}#}
+{##}
+{#    <body class="hold-transition login-page">#}
+    {#{% if form.non_field_errors %}#}
+    {#    <div class="error">#}
+    {#        {% for error in form.non_field_errors %}#}
+    {#            <span>{{ error|add_error_class:"error-border" }}</span>#}
+    {#        {% endfor %}#}
+    {#    </div>#}
+    {#{% endif %}#}
+{##}
+{#    <div class="login-box">#}
+{#        <div class="login-logo">#}
+{#            <a href="../../index2.html">سامانه آموزشی</a>#}
+{#        </div>#}
+{#        <!-- /.login-logo -->#}
+{#        <div class="card">#}
+{#            <div class="card-body login-card-body">#}
+{#                <p class="login-box-msg">برای شروع جلسه وارد سیستم شوید</p>#}
+{##}
+{#                <form method="post">#}
+{#                    {% csrf_token %}#}
+{#                    {{ form }}#}
+{#                    <div class="col">#}
+{#                        <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت</button>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#            <!-- /.login-card-body -->#}
+{#        </div>#}
+{#    </div>#}
+{#    <!-- /.login-box -->#}
+{##}
+{#    </body>#}
+{#{% endblock %}#}
+{% block main %}
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">{{ book.name }}</h3>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6" >
+                        {{ form|crispy }}
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col-6">
+{#                        {{ form.end_date}}#}
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">ویرایش اطلاعات</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'student/base.html' %}
+{% block title %}دروس ارايه شده{% endblock %}
+
+{% block main %}
+    {#    خوش آمدید{{ user.get_full_name }}#}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                {#              <div class="card-header">#}
+                {#                <h3 class="card-title">Responsive Hover Table</h3>#}
+                {##}
+                {#                <div class="card-tools">#}
+                {#                  <div class="input-group input-group-sm" style="width: 150px;">#}
+                {#                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">#}
+                {##}
+                {#                    <div class="input-group-append">#}
+                {#                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>#}
+                {#                    </div>#}
+                {#                  </div>#}
+                {#                </div>#}
+                {#              </div>#}
+                <!-- /.card-header -->
+
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>استاد درس</th>
+                            <th>عنوان درس</th>
+                            <th>کد درس</th>
+                            <th>وضعیت</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for classLesson in have_lesson %}
+                            <tr>
+                                <td>{{ classLesson.professor.get_full_name }}</td>
+                                <td>{{ classLesson.lesson }}</td>
+                                <td>{{ classLesson.code }}</td>
+                                <td>
+                                    <a target="_blank" class="badge badge-danger"
+                                       id="{{ classLesson.pk }}" onclick="select(this.id)"
+                                    style="cursor: pointer ">
+                                        عدم اخذ درس
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% for classLesson in have_not_lesson %}
+                            <tr>
+                                <td>{{ classLesson.professor.get_full_name }}</td>
+                                <td>{{ classLesson.lesson }}</td>
+                                <td>{{ classLesson.code }}</td>
+                                <td>
+                                    <a target="_blank" class="badge badge-success"
+                                       id="{{ classLesson.pk }}" onclick="select(this.id)"
+                                    style="cursor: pointer ">
+                                        اخذ درس
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+    <script>
+        function select(classLesson_id) {
+            $.ajax({
+                url: '/persons/student/select-class/' + classLesson_id,
+                type: "GET",
+                success: function (resp) {
+                    if (resp['status'] == 2) {
+                        $(`#${classLesson_id}`).html("عدم اخذ درس");
+                        $(`#${classLesson_id}`).removeClass("badge-success").addClass("badge-danger");
+                    } else {
+                        $(`#${classLesson_id}`).html("اخذ درس");
+                        $(`#${classLesson_id}`).removeClass("badge-danger").addClass("badge-success");
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr)
+                    $('#alert .modal-body').html('we have server error')
+                    $('#alert').modal('show')
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+{#href=" {% url 'environment_education:select_classes' %}"#}
+
+{##}
+{#function select(classLesson_id) {#}
+{##}
+{#            $.get('/college/select-class/', {#}
+{#                user: response.name,#}
+{#                classLesson_id: pclassLesson_id#}
+{#            }, function (json_response) {#}
+{#                console.log(json_response.user.username);#}
+{#            });#}
+{#            console.log(classLesson_id)#}
+{#        }#}
+{##}
+{#        function unselect(classLesson_id) {#}
+{#            console.log(classLesson_id)#}
+{#            $.get('/college/select-class/', {#}
+{#                user: response.name,#}
+{#                classLesson_id: classLesson_id#}
+{#            }, function (json_response) {#}
+{#                console.log(json_response.user.username);#}
+{#            });#}
+{##}
+{#        }#}

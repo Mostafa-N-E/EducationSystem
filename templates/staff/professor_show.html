@@ -1,0 +1,69 @@
+{% extends 'staff/base.html' %}
+{% block title %}لیست استادان هر کلاس درس{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-12">
+            {% for classlesson in object_list %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ classlesson.lesson }}</h3>
+                        <p>{{ classlesson.code }}</p>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>استاد</th>
+                                <th>دانشکده</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ classlesson.professor.get_full_name }}</td>
+                                <td>{{ classlesson.cluss.college }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function del(student_id, classLesson_id) {
+            $.ajax({
+                url: '/persons/professor/delete-student/' + classLesson_id + '/' + student_id,
+                type: "GET",
+                success: function (resp) {
+                    $(`#${classLesson_id}`).remove();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr)
+                    $('#alert .modal-body').html('we have server error')
+                    $('#alert').modal('show')
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+
+{#              <div class="card-header">#}
+{#                <h3 class="card-title">Responsive Hover Table</h3>#}
+{##}
+{#                <div class="card-tools">#}
+{#                  <div class="input-group input-group-sm" style="width: 150px;">#}
+{#                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">#}
+{##}
+{#                    <div class="input-group-append">#}
+{#                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                </div>#}
+{#              </div>#}
+<!-- /.card-header -->
