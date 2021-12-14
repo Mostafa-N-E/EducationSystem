@@ -6,7 +6,13 @@ from .serializers import ProfessorSerializer, StudentSerializer, ClassLessonSeri
 
 from rest_framework import generics
 from rest_framework.views import APIView
+from rest_framework.decorators import authentication_classes
+from rest_framework.decorators import permission_classes
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import authentication
+
+from accounts.api.views import MyAuthentication
 class SelectClassLessonAPI( generics.RetrieveUpdateDestroyAPIView ):
     queryset = Student.objects.all()
     serializer_class = SelectClassLessonSerializer
@@ -75,8 +81,8 @@ class StudentDestroyApi(generics.RetrieveDestroyAPIView):
 
 class ListStudent_api(APIView):
 
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [MyAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         """

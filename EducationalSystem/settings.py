@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
+
     'rest_framework',
-    'crispy_forms',
+    'rest_framework.authtoken',
+    'rest_auth',
+    
     # Educational System apps
     'environment_education',
     'accounts',
@@ -48,7 +50,8 @@ INSTALLED_APPS = [
     'library',
     'core',
 
-
+    'widget_tweaks',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -114,7 +117,6 @@ DATABASES = {
 # }
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -165,9 +167,15 @@ LOGOUT_REDIRECT_URL = 'accounts:login'
 # AUTH_USER_MODEL= 'accounts.User'
 
 REST_FRAMEWORK = {
-    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES':(
+                'rest_framework.permissions.IsAuthenticated',
+    ),
 }
-
 
 LOGGING = {
     'version': 1,

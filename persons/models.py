@@ -53,6 +53,9 @@ class Student(User):
     phone_number = models.CharField(max_length=11)
     rented_book = models.ManyToManyField(Rent,  related_name='rented_books', blank=True, null=True)
 
+    # created_by = models.ForeignKey(UniversityStaff, on_delete=models.CASCADE,related_name='student_created_by', null=True, blank=True)
+    is_email_active = models.BooleanField(verbose_name=_('is_used'), default=False)
+
     # score = models.IntegerField()
 
     # student_code = models.IntegerField(default=count_numbers)
