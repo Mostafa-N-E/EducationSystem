@@ -38,7 +38,7 @@ class SelectClassLessonSerializer(serializers.Serializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     rented_book = BookSerializer(many=True)
-
+    # college =
     class Meta:
         model = Student
         fields = '__all__'

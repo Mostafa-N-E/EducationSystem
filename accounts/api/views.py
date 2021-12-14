@@ -8,6 +8,8 @@ from rest_framework import authentication
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authentication import SessionAuthentication
 
+from django.utils.timezone import now
+
 
 class MyAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
@@ -38,11 +40,13 @@ class MyAuthentication(authentication.BaseAuthentication):
 
 class LoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = LoginSerializers(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        update_last_login(None, user)
-        if not user.is_email_active:
-            return Response({"status": status.HTTP_403})
+        # serializer = LoginSerializers(data=request.data, context={'request': request})
+        # serializer.is_valid(raise_exception=True)
+        # user = serializer.validated_data['user']
+        # if not user.is_email_active:
+        #     return Response({"status": status.HTTP_403})
+        MyAuthentication(request).authenticate()
+        # update_last_login(None, user)
+        User.objects.filter(pk=user.pk).update(last_visit=now())
         token, created = Token.objects.get_or_create(user=user)
         return Response({"status": status.HTTP_200_OK, "Token": token.key})

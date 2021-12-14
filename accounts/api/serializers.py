@@ -1,7 +1,8 @@
 from rest_framework import serializers
-
+from .views.MyAuthentication import authenticate
 class LoginSerializers(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=255)
+    email = serializers.EmailField(max_length=255)
     password = serializers.CharField(
         label=_("Password"),
         style={'input_type': 'password'},
@@ -11,12 +12,13 @@ class LoginSerializers(serializers.Serializer):
     )
 
     def validate(self, data):
-        username = data.get('email')
+        username = data.get('username')
+        email = data.get('email')
         password = data.get('password')
 
-        if username and password:
+        if username and password and email:
             user = authenticate(request=self.context.get('request'),
-                                username=username, password=password)
+                                username=username, password=password, email=email)
             if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
