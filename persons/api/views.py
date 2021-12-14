@@ -97,8 +97,8 @@ class ListStudent_api(APIView):
         Return a list of all students.
         """
         if self.request.user.is_superuser:
-            # students = ClassLesson.objects.all()
-            students = [student for student in ClassLesson.objects.all()]
+            students = ClassLesson.objects.all()
+            # students = [student for student in ClassLesson.objects.all()]
         else:
             students = ClassLesson.objects.filter(professor__username=self.request.user.username).annotate(Count('students'))
 
