@@ -81,8 +81,16 @@ class StudentDestroyApi(generics.RetrieveDestroyAPIView):
 
 class ListStudent_api(APIView):
 
-    authentication_classes = [MyAuthentication]
-    permission_classes = [IsAuthenticated]
+    authentication_classes = [MyAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = StudentSerializer
+
+    # pagination_class =
+    page_size = 2
+    page_size_query_param = 'page_size'
+    # max_page_size = 20
+    last_page_strings = ('the_end',)
+
 
     def get(self, request, format=None):
         """
@@ -93,6 +101,11 @@ class ListStudent_api(APIView):
             students = [student for student in ClassLesson.objects.all()]
         else:
             students = ClassLesson.objects.filter(professor__username=self.request.user.username).annotate(Count('students'))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
         return Response(students)
 
